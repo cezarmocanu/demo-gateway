@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: callme
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9040/realms/demo/protocol/openid-connect/certs
+
+server:
+  port: 8020

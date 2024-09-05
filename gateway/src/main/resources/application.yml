@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      default-filters:
+        - TokenRelay=
+      routes:
+        - id: callme-service
+          uri: http://localhost:8020
+          predicates:
+            - Path=/callme/**
+        - id: caller-service
+          uri: http://localhost:8040
+          predicates:
+            - Path=/caller/**
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9040/realms/demo/protocol/openid-connect/certs
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:9040/realms/demo
+        registration:
+          spring-with-test-scope:
+            provider: keycloak
+            client-id: spring-with-test-scope
+            client-secret: IWLSnakHG8aNTWNaWuSj0a11UY4lzxd9
+            authorization-grant-type: authorization_code
+            scope: openid
+
+server:
+  port: 8080
